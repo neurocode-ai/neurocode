@@ -17,7 +17,19 @@ limitations under the License.
 File created:   10-09-2022
 Last edited:    10-09-2022
 
-Initialize the Python module and all its required submodules.
+Implementation of the base PretextTaskSampler, inheriting from the 
+PyTorch sampler object.
 -------------------------------------------------------------------- """
-from neurocode import datasets
-from neurocode import samplers
+import numpy as np
+from torch.utils.data.sampler import Sampler
+
+class PretextTaskSampler(Sampler):
+    def __init__(self, data, labels, *args, **kwargs):
+        self._data = self.data
+        self._labels = self.labels
+        self._rng = np.random.RandomState(seed=0)
+
+    def __len__(self):
+        raise NotImplementedError(
+            f''
+        )

@@ -17,7 +17,6 @@ limitations under the License.
 File created:   10-09-2022
 Last edited:    10-09-2022
 
-Initialize the Python module and all its required submodules.
+Initialize the samplers module and import all the required submodules.
 -------------------------------------------------------------------- """
-from neurocode import datasets
-from neurocode import samplers
+from .base import PretextTaskSampler
