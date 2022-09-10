@@ -17,19 +17,13 @@ limitations under the License.
 File created:   10-09-2022
 Last edited:    10-09-2022
 
-Implementation of the base PretextTaskSampler, inheriting from the 
-PyTorch sampler object.
+Unit tests for the neurocode.samplers module.
 -------------------------------------------------------------------- """
-import numpy as np
+import unittest
+from neurocode.samplers import PretextTaskSampler
 from torch.utils.data.sampler import Sampler
 
-class PretextTaskSampler(Sampler):
-    def __init__(self, data, labels, *args, **kwargs):
-        self._data = data
-        self._labels = labels
-        self._rng = np.random.RandomState(seed=0)
-
-    def __len__(self):
-        raise NotImplementedError(
-            f''
-        )
+class TestPretextTaskSampler(unittest.TestCase):
+    def test_constructor(self):
+        sampler = PretextTaskSampler([], [])
+        assert isinstance(sampler, Sampler)
