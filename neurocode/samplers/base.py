@@ -25,8 +25,8 @@ from torch.utils.data.sampler import Sampler
 
 class PretextTaskSampler(Sampler):
     def __init__(self, data, labels, *args, **kwargs):
-        self._data = self.data
-        self._labels = self.labels
+        self._data = data
+        self._labels = labels
         self._rng = np.random.RandomState(seed=0)
 
     def __len__(self):
