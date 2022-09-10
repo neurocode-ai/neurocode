@@ -20,3 +20,4 @@ Last edited:    10-09-2022
 Initialize the Python module and all its required submodules.
 -------------------------------------------------------------------- """
 from neurocode import datasets
+from neurocode import samplers
