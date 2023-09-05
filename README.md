@@ -8,5 +8,5 @@ Furthermore, a number of example self-supervised learning samplers and deep neur
 
 Finally, in our opinion, feature analysis is an important aspect of any deep learning application. Analysing your neural networks latent space is the only way to truly understand what is being learned, and as such, `neurocode` provides streamlined functions to extract, visualize, and analyse the features of your data.
 
-# License
-All code in this repository is to be held under an Apache-2.0 styled license, please see [LICENSE](https://github.com/neurocode-ai/neurocode/blob/main/LICENSE) for more information.
+# 📋 License
+All code is to be held under a general MIT license, please see [LICENSE](https://github.com/neurocode-ai/neurocode/blob/main/LICENSE) for specific information.
