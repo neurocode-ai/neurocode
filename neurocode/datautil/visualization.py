@@ -23,7 +23,6 @@ SOFTWARE.
 
 File created: 2023-09-07
 Last updated: 2023-09-07
-
 """
 
 import numpy as np
