@@ -28,6 +28,8 @@ jobs:
         pip3 install numpy
         pip3 install matplotlib
         pip3 install tqdm
+        pip3 install scikit-learn
+        pip3 install umap-learn
         pip3 install torch>=1.7.0+cpu -f https://download.pytorch.org/whl/cpu/torch_stable.html --use-deprecated=legacy-resolver
 
     - name: Test locally with unittest
