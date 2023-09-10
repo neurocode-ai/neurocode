@@ -15,7 +15,7 @@
 </div>
 
 ## 🔎 Overview
-A minimalistic Python library for EEG/MEG deep learning research and analysis, primarely focused on self-supervised learning. 
+A minimalistic Python library for EEG/MEG deep learning research, primarely focused on self-supervised learning. 
 
 ## 🚀 Example usage
 ...
