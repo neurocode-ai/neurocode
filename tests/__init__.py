@@ -24,3 +24,28 @@ SOFTWARE.
 File created: 2022-09-10
 Last updated: 2023-09-10
 """
+
+import inspect
+import pkgutil
+import unittest
+import sys
+import logging
+
+log = logging.getLogger(__name__)
+
+console_handler = logging.StreamHandler(sys.stdout)
+console_handler.setLevel(logging.DEBUG)
+
+formatter = logging.Formatter("[%(asctime)s] [%(name)s] [%(levelname)s\t] %(message)s")
+
+console_handler.setFormatter(formatter)
+log.addHandler(console_handler)
+
+
+def load_tests(loader, suite, pattern):
+    for imp, modname, _ in pkgutil.walk_packages(__path__):
+        mod = imp.find_module(modname).load_module(modname)
+        for test in loader.loadTestsFromModule(mod):
+            suite.addTests(test)
+
+    return suite
