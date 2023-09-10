@@ -25,14 +25,22 @@ File created: 2023-09-10
 Last updated: 2023-09-10
 """
 
-import torch
-
-
-def load_model(path: str) -> torch.nn.Module:
-    """ """
-    try:
-        model = torch.load(path)
-    except Exception as e:
-        print(f"Could not load model from path: `{path}`, exception: `{e}`.")
-
-    return model
+from .blanco import Blanco2020
+from .contrastive import (
+    ContrastiveRPNet,
+    ContrastiveTSNet,
+    ProjectionHead,
+)
+from .resnet import (
+    ResNet18,
+    ResNet34,
+    ResNet50,
+)
+from .stagernet import StagerNet
+from .simclr import (
+    SimCLR,
+    ShallowSimCLR,
+    SignalNet,
+    VGG,
+)
+from .utils import load_model
