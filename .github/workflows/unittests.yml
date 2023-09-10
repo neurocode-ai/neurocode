@@ -1,8 +1,4 @@
-# Install required Python dependencies, run tests, and lint with a single
-# version of Python. For more information see:
-# https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
-
-name: Unit Tests
+name: Unit tests
 
 on:
   pull_request:
@@ -24,14 +20,13 @@ jobs:
 
     - name: Install dependencies
       run: |
-        python3 -m pip install --upgrade pip
-        pip3 install numpy
-        pip3 install matplotlib
-        pip3 install tqdm
-        pip3 install scikit-learn
-        pip3 install umap-learn
-        pip3 install torch>=1.7.0+cpu -f https://download.pytorch.org/whl/cpu/torch_stable.html --use-deprecated=legacy-resolver
+        python -m pip install --upgrade pip
+        python -m pip install -r requirements.txt
 
     - name: Test locally with unittest
-      run: python3 -m unittest
+      run: python -m unittest
 
+    - name: Upload coverage reports to Codecov
+      uses: codecov/codecov-action@v3
+      env:
+        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
