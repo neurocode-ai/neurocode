@@ -22,12 +22,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 File created: 2022-09-10
-Last updated: 2023-09-07
+Last updated: 2023-09-10
 """
 
 from neurocode import datasets
 from neurocode import datautil
 from neurocode import samplers
+from neurocode import training
 
 import logging
 
