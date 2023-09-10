@@ -6,3 +6,4 @@ tqdm
 scikit-learn
 umap-learn
 torch>=1.7.0+cpu
+torchvision
