@@ -30,8 +30,6 @@ import numpy as np
 import torch.nn as nn
 import torchvision.models as models
 
-from torchsummary import summary
-
 
 class ResNet18(models.resnet.ResNet):
     """neural network pytorch module, specifically ResNet18,
