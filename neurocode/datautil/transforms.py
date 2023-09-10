@@ -45,26 +45,27 @@ class BaseTransform(object):
         inheriting from this object has implemented transform func.
 
     """
+
     def __init__(self, *args, **kwargs):
         self._parameters(**kwargs)
 
     def __call__(self, x):
         return self.transform(x)
-    
+
     def _parameters(self, *args, **kwargs):
-        raise NotImplementedError(
-            'No parameter setup implemented for BaseTransform.')
+        raise NotImplementedError("No parameter setup implemented for BaseTransform.")
 
     def transform(self, x):
         raise NotImplementedError(
-            'This BaseTransform is not callable, transform not implemented yet.')
+            "This BaseTransform is not callable, transform not implemented yet."
+        )
 
 
 class CropResizeTransform(BaseTransform):
     """data augmentation module T for the SimCLR pipeline, applying
-    the Crop&Resize transform to a given input data x, retaining 
+    the Crop&Resize transform to a given input data x, retaining
     the dimensionalities. Supports multi-channel data, but might
-    have slower execution times since the transform has to be 
+    have slower execution times since the transform has to be
     applied to each channel individually (?)...
 
     Inherits from the BaseTransform object that defines the outlining
@@ -73,17 +74,17 @@ class CropResizeTransform(BaseTransform):
     Attributes
     ----------
     n_partitions: int | None
-        The number of partitions to create and sample from, i.e. given 
+        The number of partitions to create and sample from, i.e. given
         an input signal S(t) we create n number of windowed
-        signals {s_1, ..., s_n}. The number of partitions has to be 
+        signals {s_1, ..., s_n}. The number of partitions has to be
         able to divide the number of samples of the provided signal S(t).
     pick_one: bool
         Sets the transformation mode of the class, if true; then only one
         partition is selected uniformly at random and then resampled to
-        the original dimensionality of S(t), if false; then we 
-        uniformly at random pick one partition to throw away, and 
+        the original dimensionality of S(t), if false; then we
+        uniformly at random pick one partition to throw away, and
         resample all n-1 partitions to the original dimensionality.
-    
+
     Methods
     -------
     _parameters(*args, n_partitions=None, pick_one=False):
@@ -92,6 +93,7 @@ class CropResizeTransform(BaseTransform):
         applies the implemented data augmentation transform on the given input array x.
 
     """
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -104,10 +106,10 @@ class CropResizeTransform(BaseTransform):
 
     def transform(self, x):
         """func expects input np.array to have dimensionality (C, T)
-        even if only one channel is used. Hopefully more channels 
+        even if only one channel is used. Hopefully more channels
         in the SimCLR pipeline can yield better results, since there
         are spatio-temporal relations that are prevalent, not only
-        temporal relations that would be uncovered by looking at 
+        temporal relations that would be uncovered by looking at
         one channel only.
 
         Parameters
@@ -130,9 +132,10 @@ class CropResizeTransform(BaseTransform):
 
         if n_samples % partitions:
             raise ValueError(
-                f'Can`t partition x with {n_samples=} into {partitions}'
-                ' partitions without information loss.')
-        
+                f"Can`t partition x with {n_samples=} into {partitions}"
+                " partitions without information loss."
+            )
+
         size = n_samples // partitions
         indices = np.arange(partitions)
         if self.pick_one:
@@ -140,17 +143,20 @@ class CropResizeTransform(BaseTransform):
             # and return these channels. the alternative is to pick one and leave it
             # out, instead of using it. this choice remains for ALL channels in x.
             choice = np.random.choice(indices)
-            start, end = [np.ceil((choice + i) * size).astype(int) for i in [0,1]]
+            start, end = [np.ceil((choice + i) * size).astype(int) for i in [0, 1]]
             resampled = np.zeros(x.shape).astype(x.dtype)
 
             for channel in range(n_channels):
-                resampled[channel, :] = signal.resample(x[channel, start:end], n_samples)
-            
+                resampled[channel, :] = signal.resample(
+                    x[channel, start:end], n_samples
+                )
+
             return resampled
-        
+
         else:
             raise NotImplementedError(
-                'Leave one out has not been implemented yet, not used in literature either.')
+                "Leave one out has not been implemented yet, not used in literature either."
+            )
 
         return None
 
@@ -158,7 +164,7 @@ class CropResizeTransform(BaseTransform):
 class PermutationTransform(BaseTransform):
     """data augmentation module T for the SimCLR pipeline, applying the
     Permutation transformation on the provided input data array x,
-    retaining its dimensionalities and NOT applying it inplace. 
+    retaining its dimensionalities and NOT applying it inplace.
 
     Inherits from the BaseTransform object that defines the outlining
     functions for the transform.
@@ -177,15 +183,16 @@ class PermutationTransform(BaseTransform):
         applies the implemented data augmentation transform on the given input array x.
 
     """
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
     def _parameters(self, n_partitions=None):
         if not n_partitions:
             n_partitions = 10
-        
+
         self.n_partitions = n_partitions
-    
+
     def transform(self, x):
         """func applies the Transform to the input x, preserving the dimensionalities
         but expects it to be of shape (n_channels, n_samples)
@@ -193,9 +200,9 @@ class PermutationTransform(BaseTransform):
         Parameters
         ----------
         x: np.array
-            The broadcastable array on which to apply transformation. Does not do this inplace, 
+            The broadcastable array on which to apply transformation. Does not do this inplace,
             i.e. the class creates a new numpy array and returns it.
-        
+
         Returns
         -------
         permuted: np.array
@@ -207,29 +214,33 @@ class PermutationTransform(BaseTransform):
 
         if n_samples % partitions:
             raise ValueError(
-                f'Can`t partition x with {n_samples=} into {partitions}'
-                ' partitions without information loss.')
-        
+                f"Can`t partition x with {n_samples=} into {partitions}"
+                " partitions without information loss."
+            )
+
         size = n_samples // partitions
         indices = np.random.permutation(partitions)
 
         # get the partitioning indices based on the input size and permuted base indices
-        samples = [(np.ceil(i * size).astype(int), np.ceil((i + 1) * size).astype(int)) for i in indices]
+        samples = [
+            (np.ceil(i * size).astype(int), np.ceil((i + 1) * size).astype(int))
+            for i in indices
+        ]
         permuted = np.zeros(x.shape).astype(x.dtype)
 
         # apply the permutation on all channels of x, according to above shuffling
         for channel in range(n_channels):
             for idx, (start, end) in enumerate(samples):
-                nstart, nend = [np.ceil((idx + i) * size).astype(int) for i in [0,1]]
+                nstart, nend = [np.ceil((idx + i) * size).astype(int) for i in [0, 1]]
                 permuted[channel, nstart:nend] = x[channel, start:end]
-        
+
         return permuted
 
 
 class AmplitudeScaleTransform(BaseTransform):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-    
+
     def _parameters(self, minscale=0.5, maxscale=2.0):
         self.minscale = minscale
         self.maxscale = maxscale
@@ -243,10 +254,10 @@ class AmplitudeScaleTransform(BaseTransform):
 class ZeroMaskingTransform(BaseTransform):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-    
+
     def _parameters(self, samples=0.5):
         self.samples = samples
-    
+
     def transform(self, x):
         n_channels, n_samples = x.shape
         percent = np.random.uniform(0.1, self.samples, 1)[0]
@@ -254,7 +265,9 @@ class ZeroMaskingTransform(BaseTransform):
         offset = np.random.randint(-ttt, high=ttt)
 
         lidx = np.floor(n_samples * ((1 - percent) / 2)).astype(int) + offset
-        ridx = np.floor(n_samples * (percent + ((1 - percent) / 2))).astype(int) + offset
+        ridx = (
+            np.floor(n_samples * (percent + ((1 - percent) / 2))).astype(int) + offset
+        )
 
         zeroed = x.copy()
         zeroed[:, lidx:ridx] = 0.0

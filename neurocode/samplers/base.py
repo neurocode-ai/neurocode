@@ -23,6 +23,7 @@ PyTorch sampler object.
 import numpy as np
 from torch.utils.data.sampler import Sampler
 
+
 class PretextTaskSampler(Sampler):
     def __init__(self, data, labels, *args, **kwargs):
         self._data = data
@@ -30,6 +31,4 @@ class PretextTaskSampler(Sampler):
         self._rng = np.random.RandomState(seed=0)
 
     def __len__(self):
-        raise NotImplementedError(
-            f''
-        )
+        raise NotImplementedError(f"")
