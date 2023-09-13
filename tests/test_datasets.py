@@ -41,9 +41,9 @@ class TestRecording(unittest.TestCase):
                 list(np.arange(4, 14)),
             ],
             [
-                'sleeping',
-                'sleeping',
-                'awake',
-            ]
+                "sleeping",
+                "sleeping",
+                "awake",
+            ],
         )
         assert isinstance(ds, Dataset)
