@@ -22,21 +22,28 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 File created: 2022-09-10
-Last updated: 2023-09-10
+Last updated: 2023-09-13
 """
 
 import unittest
-from neurocode.datasets import RecordingDataset, EpochDataset
+import numpy as np
+
+from neurocode.datasets import RecordingDataset
 from torch.utils.data import Dataset
 
 
 class TestRecording(unittest.TestCase):
     def test_constructor(self):
-        ds = RecordingDataset()
-        assert isinstance(ds, Dataset)
-
-
-class TestEpoch(unittest.TestCase):
-    def test_constructor(self):
-        ds = EpochDataset()
+        ds = RecordingDataset(
+            [
+                list(np.arange(0, 10)),
+                list(np.arange(2, 12)),
+                list(np.arange(4, 14)),
+            ],
+            [
+                'sleeping',
+                'sleeping',
+                'awake',
+            ]
+        )
         assert isinstance(ds, Dataset)
