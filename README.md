@@ -19,7 +19,36 @@
 A minimalistic Python library for EEG/MEG deep learning research, primarely focused on self-supervised learning. 
 
 ## 🚀 Example usage
-...
+Below you can see an example adapted for a SSL training workflow using the SimCLR framework.
+
+```python
+import torch
+from pytorch_metric_learning import losses
+from neurocode.datasets import SLEMEG, RecordingDataset
+from neurocode.samplers import SignalSampler
+from neurocode.models import SignalNet, load_model
+from neurocode.training import SimCLR
+from neurocode.datautil import manifold_plot, history_plot
+
+# implement custom dataset for your .fif files
+dataset = RecordingDataset(...)
+train, valid = dataset.split()
+
+samplers = {
+  'train': SignalSampler(train.get_data(), ...),
+  'valid': SignalSampler(valid.get_data(), ...),
+}
+
+device = 'cuda' if torch.cuda.is_available() else 'cpu'
+model = SignalNet(...)
+optimizer = torch.optim.Adam(model.parameters(), ...)
+scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, ...)
+criterion = losses.NTXentLoss()
+
+simclr = SimCLR(model, device, ...)
+history = simclr.fit(samplers, save_model=True)
+
+```
 
 ## 📋 License
 All code is to be held under a general MIT license, please see [LICENSE](https://github.com/neurocode-ai/neurocode/blob/main/LICENSE) for specific information.
