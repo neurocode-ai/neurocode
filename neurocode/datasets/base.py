@@ -55,16 +55,16 @@ class RecordingDataset(Dataset):
 
         if isinstance(data, list) and isinstance(labels, list):
             raise ValueError(
-                f'Can not infer recording names when both `data` and `labels` are of '
-                f'type `list`. At least one of them have to be of type `dict`.'
+                f"Can not infer recording names when both `data` and `labels` are of "
+                f"type `list`. At least one of them have to be of type `dict`."
             )
 
         self._info = {}
         self._format_data_and_labels(data, labels, **kwargs)
-    
+
     def __len__(self) -> int:
         """ """
-        return self._info['n_recordings']
+        return self._info["n_recordings"]
 
     def __getitem__(
         self,
@@ -87,13 +87,11 @@ class RecordingDataset(Dataset):
         data: Union[list[mne.io.Raw], dict[str, mne.io.Raw]],
         labels: Union[list[list[mne.label.Label]], dict[str, list[mne.io.Label]]],
         **kwargs,
-    ): 
+    ):
         """ """
-        
+
         if isinstance(data, list):
-            data = OrderedDict(
-                (name, raw) for name, raw in zip(labels.keys(), data)
-            )
+            data = OrderedDict((name, raw) for name, raw in zip(labels.keys(), data))
 
         if isinstance(labels, list):
             labels = OrderedDict(
@@ -102,8 +100,8 @@ class RecordingDataset(Dataset):
 
         info = {}
         info = {**info, **kwargs}
-        info['n_recordings'] = len(data)
-        info['lengths'] = {name: len(raw) for name, raw in data.items()}
+        info["n_recordings"] = len(data)
+        info["lengths"] = {name: len(raw) for name, raw in data.items()}
 
         self._data = data
         self._labels = labels
@@ -112,15 +110,15 @@ class RecordingDataset(Dataset):
     def data(self) -> dict[str, mne.io.Raw]:
         """ """
         return self._data
-    
+
     def labels(self) -> dict[str, list[mne.label.Label]]:
         """ """
         return self._labels
-    
+
     def info(self) -> dict[str, Any]:
         """ """
         return self._info
-    
+
     def train_valid_split(
         self,
         *,
@@ -177,4 +175,3 @@ class RecordingDataset(Dataset):
             labels=dataset.labels(),
             **kwargs,
         )
-

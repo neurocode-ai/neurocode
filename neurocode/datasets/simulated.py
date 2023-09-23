@@ -67,7 +67,7 @@ class SimulatedDataset(Dataset):
         super(SimulatedDataset, self).__init__()
 
         if name not in mne_datasets:
-            raise ValueError(f'No MNE dataset called: `{name}`.')
+            raise ValueError(f"No MNE dataset called: `{name}`.")
 
         data_path = mne_datasets[name].data_path()
         self._name = name
@@ -106,7 +106,7 @@ class SimulatedDataset(Dataset):
 
         labels = mne.read_labels_from_annot(
             self._name,
-            subjects_dir=self._data_path / 'subjects',
+            subjects_dir=self._data_path / "subjects",
         )
 
         self._raw_data[fname] = raw
@@ -144,7 +144,7 @@ class SimulatedDataset(Dataset):
 
         for name, raw in (pbar := tqdm(self._raw_data.items())):
             pbar.set_description(f"Simulating data for `{name}`.")
-            times = raw.times[:int(raw.info["sfreq"] * epoch_duration)]
+            times = raw.times[: int(raw.info["sfreq"] * epoch_duration)]
 
             fwd = mne.read_forward_solution(self._data_path / fwd_fname)
             src = fwd["src"]
