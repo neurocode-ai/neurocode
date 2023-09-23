@@ -4,7 +4,7 @@
 <br/>
 <p align="center">
 <a href="https://github.com/neurocode-ai/neurocode">
-<img align="center" width=40% src="https://github.com/neurocode-ai/neurocode/blob/main/docs/images/neurocode_banner.png"></img>
+<img align="center" width=40% src="https://github.com/neurocode-ai/neurocode/blob/main/docs/images/neurocode_logo.webp"></img>
 </a>
 </p>
 </div>
