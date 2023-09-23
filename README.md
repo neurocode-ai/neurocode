@@ -3,6 +3,9 @@
 <div align="left">
 <br/>
 <p align="center">
+<a href="https://github.com/neurocode-ai/neurocode">
+<img align="center" width=40% src="https://github.com/neurocode-ai/neurocode/blob/feature/dataset/docs/images/neurocode_banner.png"></img>
+</a>
 </p>
 </div>
 
