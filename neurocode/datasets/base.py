@@ -22,59 +22,114 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 File created: 2022-09-10
-Last updated: 2023-09-13
+Last updated: 2023-09-23
 """
 
+from __future__ import annotations
+
+import logging
+import mne
 import numpy as np
 
 from torch.utils.data import Dataset
+from neurocode.datasets.simulated import SimulatedDataset
+
+from collections import OrderedDict
+from typing import (
+    Any,
+    Union,
+)
+
+logger = logging.getLogger(__name__)
 
 
 class RecordingDataset(Dataset):
-    def __init__(self, *args, **kwargs):
-        self._setup(*args, **kwargs)
+    def __init__(
+        self,
+        data: Union[list[mne.io.Raw], dict[str, mne.io.Raw]],
+        labels: Union[list[list[mne.label.Label]], dict[str, list[mne.io.Label]]],
+        **kwargs: dict,
+    ):
+        """ """
+        super(RecordingDataset, self).__init__()
 
-    def __len__(self):
-        return self._info["n_recordings"]
+        if isinstance(data, list) and isinstance(labels, list):
+            raise ValueError(
+                f'Can not infer recording names when both `data` and `labels` are of '
+                f'type `list`. At least one of them have to be of type `dict`.'
+            )
 
-    def __getitem__(self, indices):
+        self._info = {}
+        self._format_data_and_labels(data, labels, **kwargs)
+    
+    def __len__(self) -> int:
+        """ """
+        return self._info['n_recordings']
+
+    def __getitem__(
+        self,
+        indices: tuple[Union[int, str], int],
+    ) -> Union[int, float, np.ndarray]:
+        """ """
         recording, window = indices
+
+        if isinstance(recording, int):
+            recording = self._data.keys().index(recording)
+
         return self._data[recording][window]
 
-    def __iter__(self):
-        for idx in range(len(self)):
-            yield (self._data[idx], self._labels[idx])
+    def __iter__(self) -> tuple[mne.io.Raw, list]:
+        for name in range(len(self)):
+            yield (self._data[name], self._labels[name])
 
-    def _setup(self, datasets, labels, formatted=False, **kwargs):
-        if not formatted:
-            datasets = {
-                recording: dataset for recording, dataset in enumerate(datasets)
-            }
-            labels = {recording: label for recording, label in enumerate(labels)}
+    def _format_data_and_labels(
+        self,
+        data: Union[list[mne.io.Raw], dict[str, mne.io.Raw]],
+        labels: Union[list[list[mne.label.Label]], dict[str, list[mne.io.Label]]],
+        **kwargs,
+    ): 
+        """ """
+        
+        if isinstance(data, list):
+            data = OrderedDict(
+                (name, raw) for name, raw in zip(labels.keys(), data)
+            )
 
-        lengths = {recording: len(d) for recording, d in enumerate(datasets.values())}
-        info = {
-            "lengths": lengths,
-            "n_recordings": len(datasets),
-        }
+        if isinstance(labels, list):
+            labels = OrderedDict(
+                (name, label) for name, label in zip(data.keys(), labels)
+            )
+
+        info = {}
         info = {**info, **kwargs}
+        info['n_recordings'] = len(data)
+        info['lengths'] = {name: len(raw) for name, raw in data.items()}
 
-        self._data = datasets
+        self._data = data
         self._labels = labels
         self._info = info
 
-    def get_data(self):
+    def data(self) -> dict[str, mne.io.Raw]:
+        """ """
         return self._data
-
-    def get_labels(self):
+    
+    def labels(self) -> dict[str, list[mne.label.Label]]:
+        """ """
         return self._labels
-
-    def get_info(self):
+    
+    def info(self) -> dict[str, Any]:
+        """ """
         return self._info
-
-    def split(self, ratio=0.6, shuffle=True):
+    
+    def train_valid_split(
+        self,
+        *,
+        ratio: float = 0.6,
+        shuffle: bool = True,
+    ) -> tuple[RecordingDataset, RecordingDataset]:
+        """ """
         split_idx = int(len(self) * ratio)
-        indices = list(range(len(self)))
+        indices = np.arange(len(self))
 
         if shuffle:
             np.random.shuffle(indices)
@@ -82,15 +137,44 @@ class RecordingDataset(Dataset):
         train_indices = indices[:split_idx]
         valid_indices = indices[split_idx:]
 
-        X_train = {idx: self.data[k] for idx, k in enumerate(train_indices)}
-        Y_train = {idx: self.labels[k] for idx, k in enumerate(train_indices)}
-        X_valid = {idx: self.data[k] for idx, k in enumerate(valid_indices)}
-        Y_valid = {idx: self.labels[k] for idx, k in enumerate(valid_indices)}
+        X_train = {}
+        Y_train = {}
+        for i, name in enumerate(self._data.keys()):
+            if i in train_indices:
+                X_train[name] = self._data[name]
+                Y_train[name] = self._labels[name]
+
+        X_valid = {}
+        Y_valid = {}
+        for i, name in enumerate(self._data.keys()):
+            if i in valid_indices:
+                X_valid[name] = self._data[name]
+                Y_valid[name] = self._labels[name]
 
         train_dataset = RecordingDataset(
-            X_train, Y_train, formatted=True, sfreq=self.info["sfreq"]
+            data=X_train,
+            labels=Y_train,
+            **self._info,
         )
+
         valid_dataset = RecordingDataset(
-            X_valid, Y_valid, formatted=True, sfreq=self.info["sfreq"]
+            data=X_valid,
+            labels=Y_valid,
+            **self._info,
         )
+
         return (train_dataset, valid_dataset)
+
+    @classmethod
+    def from_simulated(
+        cls,
+        dataset: SimulatedDataset,
+        **kwargs: dict,
+    ) -> RecordingDataset:
+        """ """
+        cls(
+            data=dataset.data(),
+            labels=dataset.labels(),
+            **kwargs,
+        )
+
