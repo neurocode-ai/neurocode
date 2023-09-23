@@ -74,6 +74,7 @@ class SimulatedDataset(Dataset):
         self._data_path = data_path
 
         self._raw_data = {}
+        self._labels = {}
         self._raw_simulated = {}
         self._rng = np.random.RandomState(seed)
 
@@ -172,7 +173,7 @@ class SimulatedDataset(Dataset):
             if add_eog:
                 simulated_eog(raw_sim, random_state=self._rng)
 
-            self._raw_simulated[name] = raw_sim
+            self._raw_simulated[name] = raw_sim._data
 
         return self
 
