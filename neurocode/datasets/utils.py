@@ -44,7 +44,6 @@ mne_datasets = {
     "sample": sample,
     "somato": somato,
     "spm_face": spm_face,
-    "ucl_opm_auditory": ucl_opm_auditory,
     "visual_92_categories": visual_92_categories,
     "phantom_4dbti": phantom_4dbti,
     "refmeg_noise": refmeg_noise,
