@@ -23,8 +23,8 @@ A minimalistic Python library for EEG/MEG deep learning research, primarely focu
 ## 📦 Installation
 Either clone this repository and perform a local install accordingly
 ```
-git clone https://github.com/wilhelmagren/synd.git
-cd synd
+git clone https://github.com/neurocode-ai/neurocode.git
+cd neurocode
 pip install -e .
 ```
 or install the most recent release from the Python Package Index (PyPI).
