@@ -12,7 +12,6 @@
 [![PyPi version](https://img.shields.io/pypi/v/neurocode.svg)](https://pypi.org/project/neurocode/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![codecov](https://codecov.io/gh/neurocode-ai/neurocode/graph/badge.svg?token=IQD60CY83U)](https://codecov.io/gh/neurocode-ai/neurocode)
-[![Lines of code](https://img.shields.io/tokei/lines/github/neurocode-ai/neurocode)](https://github.com/neurocode-ai/neurocode)
 [![Unit Tests](https://github.com/neurocode-ai/neurocode/actions/workflows/unittests.yml/badge.svg)](https://github.com/neurocode-ai/neurocode/actions/workflows/unittests.yml)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
@@ -20,6 +19,18 @@
 
 ## 🔎 Overview
 A minimalistic Python library for EEG/MEG deep learning research, primarely focused on self-supervised learning. 
+
+## 📦 Installation
+Either clone this repository and perform a local install accordingly
+```
+git clone https://github.com/neurocode-ai/neurocode.git
+cd neurocode
+pip install -e .
+```
+or install the most recent release from the Python Package Index (PyPI).
+```
+pip install neurocode
+```
 
 ## 🚀 Example usage
 Below you can see an example adapted for a SSL training workflow using the SimCLR framework.
