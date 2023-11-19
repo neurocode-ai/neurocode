@@ -72,3 +72,8 @@ ignore = [
     "E501", # line too long
     "F405", # may be undefined, or defined from star imports
 ]
+
+
+[build-system]
+requires = [ "poetry-core" ]
+build-backend = "poetry.core.masonry.api"
