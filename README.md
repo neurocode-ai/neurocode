@@ -16,6 +16,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![codecov](https://codecov.io/gh/neurocode-ai/neurocode/graph/badge.svg?token=IQD60CY83U)](https://codecov.io/gh/neurocode-ai/neurocode)
 [![CI](https://github.com/neurocode-ai/neurocode/actions/workflows/ci.yml/badge.svg)](https://github.com/neurocode-ai/neurocode/actions/workflows/ci.yml)
+[![CD](https://github.com/neurocode-ai/neurocode/actions/workflows/cd.yml/badge.svg)](https://github.com/neurocode-ai/neurocode/actions/workflows/cd.yml)
 [![Tests](https://github.com/neurocode-ai/neurocode/actions/workflows/tests.yml/badge.svg)](https://github.com/neurocode-ai/neurocode/actions/workflows/tests.yml)
 
 </div>
