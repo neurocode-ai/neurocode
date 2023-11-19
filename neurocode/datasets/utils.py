@@ -22,10 +22,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 File created: 2023-09-23
-Last updated: 2023-09-23
+Last updated: 2023-11-19
 """
 
-from mne.datasets import *
+from mne.datasets import *  # noqa  F821
 
 mne_datasets = {
     "brainstorm.bst_auditory": brainstorm.bst_auditory,

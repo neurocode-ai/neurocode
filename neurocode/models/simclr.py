@@ -22,7 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 File created: 2023-09-10
-Last updated: 2023-09-10
+Last updated: 2023-11-19
 """
 
 import torch
@@ -49,6 +49,7 @@ class ResNet18(models.resnet.ResNet):
     num_classes: int
         The dimensionality of the encoder f() output, i.e. the latent space
         z. For larger ResNet this is something like 1000, but we use 200 here.
+
     """
 
     def __init__(self, block, layers, num_classes=200):
@@ -170,8 +171,6 @@ class ShallowSimCLR(nn.Module):
         self.sfreq = sfreq
         self.return_features = return_features
         self.batch_norm = apply_batch_norm
-
-        batch_norm = nn.BatchNorm2d if apply_batch_norm else nn.Identity
 
         self.encoder = nn.Sequential(
             nn.Conv2d(1, n_filters, (11, 11), stride=(3, 3)),

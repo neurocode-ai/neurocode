@@ -22,12 +22,15 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 File created: 2023-09-10
-Last updated: 2023-09-10
+Last updated: 2023-11-19
 """
 
 import numpy as np
+import torch
 
 from torch.utils.data.sampler import Sampler
+from neurocode.datasets import RecordingDataset
+from collections import defaultdict
 
 
 class PretextTaskSampler(Sampler):
@@ -66,14 +69,13 @@ class PretextTaskSampler(Sampler):
                     embedding = emb(window)
                     X.append(embedding[0, :][None])
                     Y.append(self.labels[reco_idx])
+
         X = np.concatenate([x.cpu().detach().numpy() for x in X], axis=0)
         emb._return_features = False
         return (X, Y)
 
     def downstream_sample(self, emb, device):
-        X, y = [], []
-        emb.eval()
-        emb.return_feats = True
+        pass
 
     def _parameters(self, *args, **kwargs):
         pass
