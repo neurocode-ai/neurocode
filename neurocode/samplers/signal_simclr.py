@@ -75,7 +75,7 @@ class SignalSampler(PretextTaskSampler):
 
         self._transforms = [
             CropResizeTransform(n_partitions=crop_partitions),
-            PermutationTransform(n_partitions=permutation_partitions)
+            PermutationTransform(n_partitions=permutation_partitions),
         ]
 
         self.transformer = ContrastiveViewGenerator(self._transforms, n_views)

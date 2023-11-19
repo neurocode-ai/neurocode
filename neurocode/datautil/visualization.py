@@ -198,7 +198,9 @@ def manifold_plot(
 
         handles, lbls = ax.get_legend_handles_labels()
         uniques = [
-            (h, l) for i, (h, l) in enumerate(zip(handles, lbls)) if l not in lbls[:i]  # noqa E741
+            (h, l)
+            for i, (h, l) in enumerate(zip(handles, lbls))  # noqa E741
+            if l not in lbls[:i]
         ]
         ax.legend(*zip(*uniques))
         fig.suptitle(f"{technique} of embeddings, subject {key}, {title} training")
