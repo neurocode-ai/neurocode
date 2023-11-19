@@ -34,7 +34,7 @@ jobs:
           poetry lock
           poetry install --no-root --with dev
       - name: Run tests
-        run: poetry run pytest --cov=finq --cov-report=xml tests
+        run: poetry run pytest --cov=neurocode --cov-report=xml tests
       - name: Upload coverage report
         uses: codecov/codecov-action@v3
         env:
