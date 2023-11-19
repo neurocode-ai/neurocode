@@ -30,7 +30,7 @@ jobs:
         run: |
           poetry lock
           poetry install --no-root
-      - name: Build finq
+      - name: Build neurocode
         run: poetry build --format wheel
         continue-on-error: false
       - name: Publish to PyPI
