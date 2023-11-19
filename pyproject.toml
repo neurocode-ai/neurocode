@@ -63,3 +63,12 @@ priority = "primary"
 name = "torch-cpu"
 url = "https://download.pytorch.org/whl/cpu"
 priority = "supplemental"
+
+
+[tool.ruff]
+line-length = 89
+ignore = [
+    "E401", # unused imports
+    "E501", # line too long
+    "F405", # may be undefined, or defined from star imports
+]
