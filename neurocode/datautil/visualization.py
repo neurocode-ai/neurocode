@@ -22,7 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 File created: 2023-09-07
-Last updated: 2023-09-07
+Last updated: 2023-11-19
 """
 
 import numpy as np
@@ -42,7 +42,7 @@ __all__ = (
     "history_plot",
 )
 
-__manifolds__ = {
+_manifolds = {
     "tSNE": TSNE,
     "UMAP": UMAP,
 }
@@ -113,7 +113,7 @@ def manifold_plot(
         RTdiff,
         minor_lapses_ctr,
         minor_lapses_psd,
-    ) in enumerate(Y):
+    ) in enumerate(y):
         labels["sleep"][idx] = int(reco_id // 2)
         labels["eyes"][idx] = int(reco_id % 2)
         labels["recording"][idx] = int(reco_id)
@@ -198,7 +198,9 @@ def manifold_plot(
 
         handles, lbls = ax.get_legend_handles_labels()
         uniques = [
-            (h, l) for i, (h, l) in enumerate(zip(handles, lbls)) if l not in lbls[:i]
+            (h, l)
+            for i, (h, l) in enumerate(zip(handles, lbls))  # noqa E741
+            if l not in lbls[:i]
         ]
         ax.legend(*zip(*uniques))
         fig.suptitle(f"{technique} of embeddings, subject {key}, {title} training")

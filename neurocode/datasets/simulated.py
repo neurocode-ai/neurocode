@@ -22,7 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 File created: 2023-09-23
-Last updated: 2023-09-23
+Last updated: 2023-11-19
 """
 
 from __future__ import annotations
@@ -50,6 +50,7 @@ from tqdm import tqdm
 from typing import (
     Callable,
     Union,
+    Optional,
 )
 
 logger = logging.getLogger(__name__)

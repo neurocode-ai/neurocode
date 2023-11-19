@@ -22,13 +22,17 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 File created: 2023-09-10
-Last updated: 2023-09-10
+Last updated: 2023-11-19
 """
 
 import torch
 import numpy as np
 
 from .base import PretextTaskSampler
+from neurocode.datautil import (
+    CropResizeTransform,
+    PermutationTransform,
+)
 from .contrastive_view import ContrastiveViewGenerator
 
 
@@ -71,9 +75,7 @@ class SignalSampler(PretextTaskSampler):
 
         self._transforms = [
             CropResizeTransform(n_partitions=crop_partitions),
-            PermutationTransform(n_partitions=permutation_partitions)
-            # ZeroMaskingTransform(samples=.30),
-            # AmplitudeScaleTransform()
+            PermutationTransform(n_partitions=permutation_partitions),
         ]
 
         self.transformer = ContrastiveViewGenerator(self._transforms, n_views)
@@ -96,6 +98,7 @@ class SignalSampler(PretextTaskSampler):
         SAMPLES: torch.tensor
             Same as above, but second transformation was applied to the original
             signal S(t). See neurocode.datautil.transforms for documentation.
+
         """
         batch_anchors = list()
         batch_samples = list()
@@ -105,20 +108,6 @@ class SignalSampler(PretextTaskSampler):
 
             x = self.data[reco_idx][wind_idx][0]
             T1, T2 = self.transformer(x)
-
-            """
-            import matplotlib.pyplot as plt
-            plt.style.use('seaborn')
-            plt.rcParams['figure.dpi'] = 300
-            plt.rcParams['savefig.dpi'] = 300
-            fig, axs = plt.subplots()
-
-            #for channel in range(3):
-            #axs[channel, 0].plot(x[channel, :])
-            #axs[channel, 1].plot(T1.numpy()[channel, :])
-            axs.plot(x[0, :])
-            plt.show()
-            """
 
             batch_anchors.append(T1.unsqueeze(0))
             batch_samples.append(T2.unsqueeze(0))
